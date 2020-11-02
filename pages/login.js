@@ -62,7 +62,7 @@ export default function Login() {
   };
 
   return (
-    <div class="main-container">
+    <div className="main-container">
       <Head>
         <title>Waris - Login</title>
         <link rel="icon" href="/favicon.ico" />
@@ -88,17 +88,17 @@ export default function Login() {
         ></script>
       </Head>
 
-      <header id="header" class="header-fixed">
-        <div class="container">
-          <div id="logo" class="pull-left">
+      <header id="header" className="header-fixed">
+        <div className="container">
+          <div id="logo" className="pull-left">
             <h1>
-              <a href="#intro" class="scrollto">
+              <a href="#intro" className="scrollto">
                 Waris
               </a>
             </h1>
           </div>
           <nav id="nav-menu-container">
-            <ul class="nav-menu">
+            <ul className="nav-menu">
               <li>
                 <a href="/">Back to Home</a>
               </li>
@@ -107,12 +107,12 @@ export default function Login() {
         </div>
       </header>
 
-      <section id="more-features" class="section-bg">
-        <div class="container">
-          <div class="section-header">
-            <h3 class="section-title">Access Your Account</h3>
-            <span class="section-divider"></span>
-            <p class="section-description">
+      <section id="more-features" className="section-bg">
+        <div className="container">
+          <div className="section-header">
+            <h3 className="section-title">Access Your Account</h3>
+            <span className="section-divider"></span>
+            <p className="section-description">
               Your Waris account on the blockchain is linked to your Stellar
               wallet. <br />
               You access your private notes by logging in using your wallet
@@ -120,51 +120,51 @@ export default function Login() {
             </p>
           </div>
 
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="file-input box">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="file-input box">
                 <div style={{ padding: 40 + "px" }}>
-                  <div class="icon">
-                    <i class="fas fa-key icon-large"></i>
+                  <div className="icon">
+                    <i className="fas fa-key icon-large"></i>
                   </div>
-                  <h4 class="title">
+                  <h4 className="title">
                     <a onClick={handleShowLoginByKey}>Login with Secret Key</a>
                   </h4>
-                  <p class="description">
+                  <p className="description">
                     Your secret key will only be kept on your device browser.
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="file-input box">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="file-input box">
                 <div style={{ padding: 40 + "px" }}>
-                  <div class="icon">
-                    <i class="fas fa-wallet icon-large"></i>
+                  <div className="icon">
+                    <i className="fas fa-wallet icon-large"></i>
                   </div>
-                  <h4 class="title">
+                  <h4 className="title">
                     <a>Login with Wallet (Coming Soon)</a>
                   </h4>
-                  <p class="description">Drop or browse your wallet here.</p>
+                  <p className="description">Drop or browse your wallet here.</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-12 section-header">
-              <p class="description create-account">
+          <div className="row">
+            <div className="col-lg-12 section-header">
+              <p className="description create-account">
                 <a className="create-account" onClick={handleShowCreateAccount}>
                   Don't have a wallet? Create one for free.
                 </a>
               </p>
             </div>
           </div>
-          <div class="row" style={{ marginTop: 20 + "px" }}>
-            <div class="col-lg-12 section-header">
-              <i class="fas fa-exclamation-triangle warning-icon"></i>
-              <p class="section-description" style={{ textAlign: "left" }}>
+          <div className="row" style={{ marginTop: 20 + "px" }}>
+            <div className="col-lg-12 section-header">
+              <i className="fas fa-exclamation-triangle warning-icon"></i>
+              <p className="section-description" style={{ textAlign: "left" }}>
                 Alpha Build: Waris is currently in development and will use the
                 Stellar Testnet for account creation and all transactions.
               </p>
@@ -179,14 +179,14 @@ export default function Login() {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <div class="form-group">
+            <div className="form-group">
               <input
-                class="form-control"
+                className="form-control"
                 value={input}
                 onInput={(e) => setInput(e.target.value)}
                 placeholder="Your Stellar account secret key"
               />
-              <small class="form-text text-muted">
+              <small className="form-text text-muted">
                 We'll never store your secret key.
               </small>
             </div>

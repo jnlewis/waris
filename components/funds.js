@@ -48,21 +48,21 @@ export default function Funds() {
     if (funds) {
       return funds.map((item) => {
         return (
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{item.name}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">{item.name}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">
                 {item.amount} {item.asset}
               </h6>
-              <p class="card-text">Claimable From: {item.claimableDate}</p>
-              <p class="card-text">
+              <p className="card-text">Claimable From: {item.claimableDate}</p>
+              <p className="card-text">
                 Benificiary Account:
                 {item.beneficiaryAccount}
               </p>
-              <a href="#" class="card-link">
+              <a href="#" className="card-link">
                 Edit
               </a>
-              <a href="#" class="card-link text-danger">
+              <a href="#" className="card-link text-danger">
                 Invalidate
               </a>
             </div>
@@ -75,9 +75,9 @@ export default function Funds() {
   };
 
   return (
-    <div class="wrapper">
+    <div className="wrapper">
       <h2>Active Funds</h2>
-      <div class="">
+      <div>
         {displayActiveFunds()}
         <div>
           <button className="btn btn-primary" onClick={() => handleShow()}>
@@ -98,34 +98,34 @@ export default function Funds() {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputEmail1">Fund Name</label>
               <input
-                class="form-control"
+                className="form-control"
                 id="exampleInputEmail1"
                 placeholder="Eg: Tiffany's Education Fund"
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputEmail1">Benificiary Account</label>
               <input
-                class="form-control"
+                className="form-control"
                 id="exampleInputEmail1"
                 placeholder=""
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputEmail1">Amount</label>
               <input
-                class="form-control"
+                className="form-control"
                 id="exampleInputEmail1"
                 placeholder=""
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label for="exampleInputEmail1">Claimable Date</label>
               <input
-                class="form-control"
+                className="form-control"
                 id="exampleInputEmail1"
                 placeholder=""
               />

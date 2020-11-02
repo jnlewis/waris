@@ -3,7 +3,7 @@ import styles from "./../styles/pages/index.style.js";
 
 export default function Home() {
   return (
-    <div class="body">
+    <div className="body">
       <Head>
         <title>Waris</title>
         <link rel="icon" href="/favicon.ico" />
@@ -29,19 +29,19 @@ export default function Home() {
         ></script>
       </Head>
 
-      <header id="header" class="header-fixed">
-        <div class="container">
-          <div id="logo" class="pull-left">
+      <header id="header" className="header-fixed">
+        <div className="container">
+          <div id="logo" className="pull-left">
             <h1>
-              <a href="#intro" class="scrollto">
+              <a href="#intro" className="scrollto">
                 Waris
               </a>
             </h1>
           </div>
 
           <nav id="nav-menu-container">
-            <ul class="nav-menu">
-              <li class="menu-active">
+            <ul className="nav-menu">
+              <li className="menu-active">
                 <a href="#intro">Home</a>
               </li>
               <li>
@@ -62,7 +62,7 @@ export default function Home() {
             </ul>
           </nav>
           <nav id="nav-menu-container-mobile">
-            <ul class="nav-menu">
+            <ul className="nav-menu">
               <li>
                 <a href="/login">Login</a>
               </li>
@@ -72,10 +72,10 @@ export default function Home() {
       </header>
 
       <section id="intro">
-        <div class="intro-text">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
+        <div className="intro-text">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
                 <p style={{ fontSize: 25 + "px" }}>
                   Create Claimable Funds for the Future
                 </p>
@@ -85,7 +85,7 @@ export default function Home() {
                   <br />
                   Waris let's you do all these and more.
                 </p>
-                <a href="/login" class="btn-get-started scrollto">
+                <a href="/login" className="btn-get-started scrollto">
                   Get Started
                 </a>
               </div>
@@ -93,9 +93,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div class="product-screens">
+        <div className="product-screens">
           <div
-            class="product-screen-2 wow fadeInUp"
+            className="product-screen-2 wow fadeInUp"
             data-wow-delay="0.2s"
             data-wow-duration="0.6s"
           >
@@ -106,51 +106,51 @@ export default function Home() {
 
       <main id="main">
         <section id="features">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="section-header">
-                  <h3 class="section-title">Product Highlights</h3>
-                  <span class="section-divider"></span>
-                  <p class="section-description">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="section-header">
+                  <h3 className="section-title">Product Highlights</h3>
+                  <span className="section-divider"></span>
+                  <p className="section-description">
                     Here are some things you can do with Waris.
                   </p>
                 </div>
               </div>
 
-              <div class="col-lg-10 offset-lg-1">
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 box">
-                    <div class="icon">
-                      <i class="fas fa-money-check"></i>
+              <div className="col-lg-10 offset-lg-1">
+                <div className="row">
+                  <div className="col-lg-6 col-md-6 box">
+                    <div className="icon">
+                      <i className="fas fa-money-check"></i>
                     </div>
-                    <h4 class="title">Scheduled Payments</h4>
-                    <p class="description">...</p>
+                    <h4 className="title">Scheduled Payments</h4>
+                    <p className="description">...</p>
                   </div>
-                  <div class="col-lg-6 col-md-6 box">
-                    <div class="icon">
-                      <i class="fas fa-umbrella-beach"></i>
+                  <div className="col-lg-6 col-md-6 box">
+                    <div className="icon">
+                      <i className="fas fa-umbrella-beach"></i>
                     </div>
-                    <h4 class="title">Retirement Savings</h4>
-                    <p class="description">...</p>
+                    <h4 className="title">Retirement Savings</h4>
+                    <p className="description">...</p>
                   </div>
-                  <div class="col-lg-6 col-md-6 box">
-                    <div class="icon">
-                      <i class="fas fa-hand-holding-usd"></i>
+                  <div className="col-lg-6 col-md-6 box">
+                    <div className="icon">
+                      <i className="fas fa-hand-holding-usd"></i>
                     </div>
-                    <h4 class="title">Will Writing</h4>
-                    <p class="description">
+                    <h4 className="title">Will Writing</h4>
+                    <p className="description">
                       Make wills to leave assets to your loved ones for free,
                       without the hastle and fees associated with an
                       intermidiary.
                     </p>
                   </div>
-                  <div class="col-lg-6 col-md-6 box">
-                    <div class="icon">
-                      <i class="fas fa-funnel-dollar"></i>
+                  <div className="col-lg-6 col-md-6 box">
+                    <div className="icon">
+                      <i className="fas fa-funnel-dollar"></i>
                     </div>
-                    <h4 class="title">Windfall Management</h4>
-                    <p class="description">...</p>
+                    <h4 className="title">Windfall Management</h4>
+                    <p className="description">...</p>
                   </div>
                 </div>
               </div>
@@ -159,15 +159,15 @@ export default function Home() {
         </section>
 
         <section id="advanced-features">
-          <div class="features-row section-bg">
-            <div class="container">
-              <div class="row">
-                <div class="col-12">
+          <div className="features-row section-bg">
+            <div className="container">
+              <div className="row">
+                <div className="col-12">
                   <img
-                    class="advanced-feature-img-right"
+                    className="advanced-feature-img-right"
                     src="/assets/img/screenshot-desktop-mobile.png"
                   />
-                  <div class="wow fadeInLeft">
+                  <div className="wow fadeInLeft">
                     <h2>
                       Manage your claimable funds in an easy to use interface.
                     </h2>
@@ -193,19 +193,19 @@ export default function Home() {
         </section>
 
         <section id="call-to-action">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-9 text-center text-lg-left">
-                <h3 class="cta-title">Open Source</h3>
-                <p class="cta-text">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-9 text-center text-lg-left">
+                <h3 className="cta-title">Open Source</h3>
+                <p className="cta-text">
                   Waris is open source to maintain the highest level of
                   transparency - and is part of our commitment to your privacy
                   and security.
                 </p>
               </div>
-              <div class="col-lg-3 cta-btn-container text-center">
+              <div className="col-lg-3 cta-btn-container text-center">
                 <a
-                  class="cta-btn align-middle"
+                  className="cta-btn align-middle"
                   target="_blank"
                   href="https://github.com/jnlewis/waris"
                 >
@@ -216,68 +216,68 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="more-features" class="section-bg">
-          <div class="container">
-            <div class="section-header">
-              <h3 class="section-title">What Makes Waris Different</h3>
-              <span class="section-divider"></span>
+        <section id="more-features" className="section-bg">
+          <div className="container">
+            <div className="section-header">
+              <h3 className="section-title">What Makes Waris Different</h3>
+              <span className="section-divider"></span>
             </div>
 
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="box wow fadeInLeft">
-                  <div class="icon">
-                    <i class="fas fa-handshake"></i>
+            <div className="row">
+              <div className="col-lg-6">
+                <div className="box wow fadeInLeft">
+                  <div className="icon">
+                    <i className="fas fa-handshake"></i>
                   </div>
-                  <h4 class="title">
+                  <h4 className="title">
                     <a href="">Trustless</a>
                   </h4>
-                  <p class="description">
+                  <p className="description">
                     You funds are stored on the blockchain without relying on an
                     intermediary.
                   </p>
                 </div>
               </div>
 
-              <div class="col-lg-6">
-                <div class="box wow fadeInRight">
-                  <div class="icon">
-                    <i class="fas fa-book"></i>
+              <div className="col-lg-6">
+                <div className="box wow fadeInRight">
+                  <div className="icon">
+                    <i className="fas fa-book"></i>
                   </div>
-                  <h4 class="title">
+                  <h4 className="title">
                     <a href="">Permanent</a>
                   </h4>
-                  <p class="description">
+                  <p className="description">
                     Claims are executed without possible intervention. Your
                     decision is final.
                   </p>
                 </div>
               </div>
 
-              <div class="col-lg-6">
-                <div class="box wow fadeInLeft">
-                  <div class="icon">
-                    <i class="fas fa-lock"></i>
+              <div className="col-lg-6">
+                <div className="box wow fadeInLeft">
+                  <div className="icon">
+                    <i className="fas fa-lock"></i>
                   </div>
-                  <h4 class="title">
+                  <h4 className="title">
                     <a href="">Secured</a>
                   </h4>
-                  <p class="description">
+                  <p className="description">
                     Only you have access to your account through your Stellar
                     secret key or wallet.
                   </p>
                 </div>
               </div>
 
-              <div class="col-lg-6">
-                <div class="box wow fadeInRight">
-                  <div class="icon">
-                    <i class="fas fa-adjust"></i>
+              <div className="col-lg-6">
+                <div className="box wow fadeInRight">
+                  <div className="icon">
+                    <i className="fas fa-adjust"></i>
                   </div>
-                  <h4 class="title">
+                  <h4 className="title">
                     <a href="">Transparent</a>
                   </h4>
-                  <p class="description">
+                  <p className="description">
                     Waris is completely open source to remain transparent of its
                     inner workings.
                   </p>
@@ -288,10 +288,10 @@ export default function Home() {
         </section>
 
         <section id="contact">
-          <div class="container">
-            <div class="row wow fadeInUp">
-              <div class="col-lg-5 col-md-5">
-                <div class="contact-about">
+          <div className="container">
+            <div className="row wow fadeInUp">
+              <div className="col-lg-5 col-md-5">
+                <div className="contact-about">
                   <h3>WARIS</h3>
                   <p>
                     Waris aims to make claimable funds self managable and safe
@@ -301,11 +301,11 @@ export default function Home() {
                 </div>
               </div>
 
-              <div class="col-lg-7 col-md-7">
-                <div class="info">
+              <div className="col-lg-7 col-md-7">
+                <div className="info">
                   <div>
                     <h4>Contact</h4>
-                    <i class="fas fa-envelope" style={{ float: "left" }}></i>
+                    <i className="fas fa-envelope" style={{ float: "left" }}></i>
                     <p>
                       <a
                         target="_blank"
@@ -323,10 +323,10 @@ export default function Home() {
       </main>
 
       <footer id="footer">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-6 text-lg-left text-center">
-              <div class="credits">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 text-lg-left text-center">
+              <div className="credits">
                 Designed by{" "}
                 <a href="https://bootstrapmade.com/">BootstrapMade</a>
               </div>

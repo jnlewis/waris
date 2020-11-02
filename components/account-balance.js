@@ -21,10 +21,10 @@ export default function AccountBalance() {
     if (balances) {
       return balances.map((item) => {
         return (
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{item.assetType}</h5>
-              <p class="card-text">{item.balance}</p>
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">{item.assetType}</h5>
+              <p className="card-text">{item.balance}</p>
             </div>
           </div>
         );
@@ -33,9 +33,9 @@ export default function AccountBalance() {
   };
 
   return (
-    <div class="wrapper">
+    <div className="wrapper">
       <h2>Account Balance</h2>
-      <div class="">{displayBalances()}</div>
+      <div>{displayBalances()}</div>
 
       <style jsx global>
         {styles}
