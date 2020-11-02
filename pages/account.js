@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import styles from "./account.style.js";
+import styles from "./../styles/pages/account.style.js";
 import SideNav, {
   Toggle,
   Nav,

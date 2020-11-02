@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getBalance, getKeyPair } from "../core/services/stellarService.js";
-import styles from "./account-balance.style.js";
+import styles from "./../styles/components/account-balance.style.js";
 
 export default function AccountBalance() {
   const [balances, setBalances] = useState();

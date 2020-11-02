@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./claimables.style.js";
+import styles from "./../styles/components/claimables.style.js";
 
 export default function Claimables() {
   return (

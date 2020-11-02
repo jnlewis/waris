@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import styles from "./login.style.js";
+import styles from "./../styles/pages/login.style.js";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import {

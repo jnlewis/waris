@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./history.style.js";
+import styles from "./../styles/components/history.style.js";
 
 export default function History() {
   return (

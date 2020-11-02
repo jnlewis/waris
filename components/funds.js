@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./funds.style.js";
+import styles from "./../styles/components/funds.style.js";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import {
