@@ -21,7 +21,7 @@ export default function AccountBalance() {
     if (balances) {
       return balances.map((item) => {
         return (
-          <div className="card">
+          <div className="card" key={item.assetType}>
             <div className="card-body">
               <h5 className="card-title">{item.assetType}</h5>
               <p className="card-text">{item.balance}</p>

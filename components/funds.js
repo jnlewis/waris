@@ -2,16 +2,30 @@ import React, { useState, useEffect } from "react";
 import styles from "./../styles/components/funds.style.js";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import TransactionDialog from "./../components/transaction-dialog";
 import {
-  getClaimablesByCreator,
-  createClaimableBalance,
-} from "../core/services/stellarServiceMock";
+  getKeyPair,
+  getFundsByCreator,
+  buildCreateClaimableBalanceTransaction,
+  getAssetByName,
+} from "../core/services/stellarService";
 
 export default function Funds() {
-  const [isCreating, setIsCreating] = useState(false);
-  const [showRetry, setShowRetry] = useState(false);
   const [show, setShow] = useState(false);
   const [funds, setFunds] = useState([]);
+
+  const [inputFundName, setInputFundName] = useState("");
+  const [inputBeneficiaryAccount, setInputBeneficiaryAccount] = useState("");
+  const [inputAmount, setInputAmount] = useState("");
+  const [inputClaimableDate, setInputClaimableDate] = useState("");
+
+  const [showTransactionDialog, setShowTransactionDialog] = useState(false);
+  const [txDialogTitle, setTxDialogTitle] = useState("");
+  const [txDialogDesc, setTxDialogDesc] = useState("");
+  const [transaction, setTransaction] = useState();
+
+  const handleTxCancel = () => setShowTransactionDialog(false);
+  const handleTxDone = () => setShowTransactionDialog(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,35 +34,38 @@ export default function Funds() {
     const secretKey = localStorage.getItem("loggedInKey");
     const keypair = getKeyPair(secretKey);
 
-    getClaimablesByCreator(keypair.publicKey()).then((funds) => {
-      setFunds(funds);
+    getFundsByCreator(keypair.publicKey()).then((result) => {
+      setFunds(result);
     });
   }, [funds]);
 
-  const create = () => {
-    setIsCreating(true);
+  const handleCreate = () => {
+    handleClose();
+    // const secretKey = localStorage.getItem("loggedInKey");
+    // const keypair = getKeyPair(secretKey);
+    // const tx = buildCreateClaimableBalanceTransaction(
+    //   keypair,
+    //   inputBeneficiaryAccount,
+    //   getAssetByName("native"),
+    //   inputAmount,
+    //   inputFundName,
+    //   inputClaimableDate
+    // );
+    const tx = null;
+    setTransaction(tx);
 
-    // TODO: get the values from screen
-
-    // createClaimableBalance().then(result => {
-    // if failed setShowRetry
-    // if success .. need to refresh screen to show new thing and close the dialog box
-    // });
-  };
-
-  const retry = () => {
-    setIsCreating(true);
-
-    // createClaimableBalance().then(result => {
-
-    // });
+    setTxDialogTitle(`Create Fund Submission`);
+    setTxDialogDesc(
+      `You are about to create a claimable fund with ${inputAmount} Lumens. Confirm submission?`
+    );
+    setShowTransactionDialog(true);
   };
 
   const displayActiveFunds = () => {
     if (funds) {
       return funds.map((item) => {
         return (
-          <div className="card">
+          <div className="card" key={item.balanceId}>
             <div className="card-body">
               <h5 className="card-title">{item.name}</h5>
               <h6 className="card-subtitle mb-2 text-muted">
@@ -59,9 +76,6 @@ export default function Funds() {
                 Benificiary Account:
                 {item.beneficiaryAccount}
               </p>
-              <a href="#" className="card-link">
-                Edit
-              </a>
               <a href="#" className="card-link text-danger">
                 Invalidate
               </a>
@@ -99,62 +113,61 @@ export default function Funds() {
         <Modal.Body>
           <div>
             <div className="form-group">
-              <label for="exampleInputEmail1">Fund Name</label>
+              <label>Fund Name</label>
               <input
                 className="form-control"
-                id="exampleInputEmail1"
-                placeholder="Eg: Tiffany's Education Fund"
+                value={inputFundName}
+                onInput={(e) => setInputFundName(e.target.value)}
+                placeholder="Eg: Jane's Education Fund"
               />
             </div>
             <div className="form-group">
-              <label for="exampleInputEmail1">Benificiary Account</label>
+              <label>Benificiary Account</label>
               <input
                 className="form-control"
-                id="exampleInputEmail1"
+                value={inputBeneficiaryAccount}
+                onInput={(e) => setInputBeneficiaryAccount(e.target.value)}
                 placeholder=""
               />
             </div>
             <div className="form-group">
-              <label for="exampleInputEmail1">Amount</label>
+              <label>Amount</label>
               <input
                 className="form-control"
-                id="exampleInputEmail1"
+                value={inputAmount}
+                onInput={(e) => setInputAmount(e.target.value)}
                 placeholder=""
               />
             </div>
             <div className="form-group">
-              <label for="exampleInputEmail1">Claimable Date</label>
+              <label>Claimable Date</label>
               <input
                 className="form-control"
-                id="exampleInputEmail1"
+                value={inputClaimableDate}
+                onInput={(e) => setInputClaimableDate(e.target.value)}
                 placeholder=""
               />
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          {!isCreating && (
-            <>
-              <Button variant="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-              {!showRetry && (
-                <Button variant="primary" onClick={create}>
-                  Create
-                </Button>
-              )}
-              {showRetry && (
-                <Button variant="primary" onClick={retry}>
-                  Retry
-                </Button>
-              )}
-            </>
-          )}
-          {isCreating && (
-            <div>Please wait. This may take a couple of minutes</div>
-          )}
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleCreate}>
+            Create
+          </Button>
         </Modal.Footer>
       </Modal>
+
+      <TransactionDialog
+        show={showTransactionDialog}
+        title={txDialogTitle}
+        desc={txDialogDesc}
+        onCancel={handleTxCancel}
+        onFinish={handleTxDone}
+        transaction={transaction}
+      />
 
       <style jsx global>
         {styles}
