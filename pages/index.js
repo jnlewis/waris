@@ -83,7 +83,7 @@ export default function Home() {
                   Write wills for your loved ones, save for retirement, fund
                   your children's education.
                   <br />
-                  Waris let's you do all these and more.
+                  Waris lets you do all of these and more.
                 </p>
                 <a href="/login" className="btn-get-started scrollto">
                   Get Started
@@ -99,7 +99,7 @@ export default function Home() {
             data-wow-delay="0.2s"
             data-wow-duration="0.6s"
           >
-            <img src="/assets/img/screenshot-desktop-frame-2.jpg" />
+            <img src="/assets/img/screenshot-desktop-frame-2.png" />
           </div>
         </div>
       </section>
@@ -125,14 +125,14 @@ export default function Home() {
                       <i className="fas fa-money-check"></i>
                     </div>
                     <h4 className="title">Scheduled Payments</h4>
-                    <p className="description">...</p>
+                    <p className="description">Schedule payments that a recipient can claim at a specified date.</p>
                   </div>
                   <div className="col-lg-6 col-md-6 box">
                     <div className="icon">
                       <i className="fas fa-umbrella-beach"></i>
                     </div>
                     <h4 className="title">Retirement Savings</h4>
-                    <p className="description">...</p>
+                    <p className="description">Create saving funds that you can unlock when the time is right for you.</p>
                   </div>
                   <div className="col-lg-6 col-md-6 box">
                     <div className="icon">
@@ -149,8 +149,8 @@ export default function Home() {
                     <div className="icon">
                       <i className="fas fa-funnel-dollar"></i>
                     </div>
-                    <h4 className="title">Windfall Management</h4>
-                    <p className="description">...</p>
+                    <h4 className="title">Regular Withdrawals</h4>
+                    <p className="description">Create steady withdrawals at specified intervals to make sure your money lasts while giving you peace of mind.</p>
                   </div>
                 </div>
               </div>
