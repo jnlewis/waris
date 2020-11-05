@@ -6,6 +6,7 @@ import {
   getClaimablesByBeneficiary,
   buildClaimTransaction,
 } from "../core/services/stellarService";
+import StorageService from './../core/services/storageService';
 
 export default function Claimables() {
   const [claimables, setClaimables] = useState();
@@ -13,25 +14,43 @@ export default function Claimables() {
   const [txDialogTitle, setTxDialogTitle] = useState('');
   const [txDialogDesc, setTxDialogDesc] = useState('');
   const [transaction, setTransaction] = useState();
+  const [transactionMetadata, setTransactionMetadata] = useState();
 
-  const handleTxCancel = () => setShowTransactionDialog(false);
-  const handleTxDone = () => setShowTransactionDialog(false);
+  const handleTxCancel = () => { setShowTransactionDialog(false); refreshListing(); }
+  const handleTxDone = () => { setShowTransactionDialog(false); refreshListing(); }
 
-  useEffect(() => {
-    const secretKey = localStorage.getItem("loggedInKey");
+  const refreshListing = () => {
+    const secretKey = StorageService.getLoggedInKey();
     const keypair = getKeyPair(secretKey);
-
     getClaimablesByBeneficiary(keypair.publicKey()).then((result) => {
       setClaimables(result);
     });
+  }
+
+  useEffect(() => {
+    console.log(`[useEffect] claimables`);
+
+    if (!claimables) {
+      const secretKey = StorageService.getLoggedInKey();
+      const keypair = getKeyPair(secretKey);
+  
+      getClaimablesByBeneficiary(keypair.publicKey()).then((result) => {
+        setClaimables(result);
+      });
+    }
   }, [claimables]);
 
   const handleClaim = (claimable) => {
-    // const secretKey = localStorage.getItem("loggedInKey");
-    // const keypair = getKeyPair(secretKey);
-    // const tx = buildClaimTransaction(keypair, claimable.balanceId);
-    const tx = null;
+    const secretKey = StorageService.getLoggedInKey();
+    const keypair = getKeyPair(secretKey);
+    const tx = buildClaimTransaction(keypair, claimable.balanceId);
     setTransaction(tx);
+
+    // TODO: Temporary storage
+    setTransactionMetadata({
+      type: 'Claim',
+      balanceId: claimable.balanceId
+    });
 
     setTxDialogTitle(`Claim Submission`);
     setTxDialogDesc(`You are about to claim ${claimable.amount} ${claimable.asset}. Confirm submission?`);
@@ -39,10 +58,10 @@ export default function Claimables() {
   };
 
   const displayClaimables = () => {
-    if (claimables) {
-      return claimables.map((item) => {
+    if (claimables && claimables.length > 0) {
+      return claimables.map((item, index) => {
         return (
-          <div className="card" key={item.balanceId}>
+          <div className="card" key={index}>
             <div className="card-header">{item.name}</div>
             <div className="card-body">
               <h5 className="card-title">
@@ -70,9 +89,11 @@ export default function Claimables() {
   return (
     <div className="wrapper">
       <h2>Claimables</h2>
-      <p>You are eligible to claim the following funds.</p>
+      <div className="text-muted">Funds you are eligible to claim</div>
 
-      <div>{displayClaimables()}</div>
+      <div className="pt-4">
+        {displayClaimables()}
+      </div>
       <TransactionDialog
         show={showTransactionDialog}
         title={txDialogTitle}
@@ -80,6 +101,7 @@ export default function Claimables() {
         onCancel={handleTxCancel}
         onFinish={handleTxDone}
         transaction={transaction}
+        transactionMetadata={transactionMetadata}
       />
       <style jsx global>
         {styles}

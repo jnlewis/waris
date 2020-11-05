@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { getBalance, getKeyPair } from "../core/services/stellarService.js";
 import styles from "./../styles/components/account-balance.style.js";
+import StorageService from './../core/services/storageService';
 
 export default function AccountBalance() {
   const [balances, setBalances] = useState();
 
   useEffect(() => {
-    const secretKey = localStorage.getItem("loggedInKey");
-    const keypair = getKeyPair(secretKey);
+    console.log('[useEffect] account balance');
 
     if (!balances) {
+      const secretKey = StorageService.getLoggedInKey();
+      const keypair = getKeyPair(secretKey);
+  
       getBalance(keypair.publicKey()).then((result) => {
         setBalances(result);
         console.log(JSON.stringify(result));
@@ -32,10 +35,20 @@ export default function AccountBalance() {
     }
   };
 
+  const getAddress = () => {
+    const secretKey = StorageService.getLoggedInKey();
+    const keypair = getKeyPair(secretKey);
+    return keypair.publicKey();
+  }
+
   return (
     <div className="wrapper">
       <h2>Account Balance</h2>
-      <div>{displayBalances()}</div>
+      <div className="text-muted">Address: {getAddress()}</div>
+
+      <div className="pt-4">
+        {displayBalances()}
+      </div>
 
       <style jsx global>
         {styles}

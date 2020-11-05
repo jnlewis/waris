@@ -177,10 +177,10 @@ export default css.global`
     z-index: 20;
     left: calc(30% - 154px);
     bottom: 0;
-    top: 65px;
+    top: 35px;
   }
   #intro .product-screens .product-screen-2 img {
-    width: 100%;
+    max-width: 900px;
   }
 
   /*--------------------------------------------------------------
@@ -423,6 +423,7 @@ export default css.global`
   }
 
   #advanced-features .advanced-feature-img-right {
+    width: 555px;
     max-width: 100%;
     float: right;
     padding: 0 0 30px 30px;

@@ -9,6 +9,7 @@ import {
   isAccountExists,
   generateKeyAndCreateAccount,
 } from "./../core/services/stellarService";
+import StorageService from './../core/services/storageService';
 
 export default function Login() {
   const router = useRouter();
@@ -48,7 +49,7 @@ export default function Login() {
       console.log(`returning from promise ${exists}`);
       setIsLoading(false);
       if (exists) {
-        localStorage.setItem("loggedInKey", input);
+        StorageService.setLoggedInKey(input);
         router.push("/account");
       } else {
         setInput("");

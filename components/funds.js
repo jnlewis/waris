@@ -5,78 +5,110 @@ import Modal from "react-bootstrap/Modal";
 import TransactionDialog from "./../components/transaction-dialog";
 import {
   getKeyPair,
-  getFundsByCreator,
+  getClaimablesByCreator,
   buildCreateClaimableBalanceTransaction,
   getAssetByName,
 } from "../core/services/stellarService";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import StorageService from './../core/services/storageService';
 
 export default function Funds() {
   const [show, setShow] = useState(false);
-  const [funds, setFunds] = useState([]);
+  const [funds, setFunds] = useState();
 
   const [inputFundName, setInputFundName] = useState("");
-  const [inputBeneficiaryAccount, setInputBeneficiaryAccount] = useState("");
+  const [inputBeneficiaryAccount, setInputBeneficiaryAccount] = useState("GCSVEYRVDRIJ6U7YDZMVKYEPDXH5F7AUMSAHTU3GV5LPEHEFP2YR23OH");
   const [inputAmount, setInputAmount] = useState("");
-  const [inputClaimableDate, setInputClaimableDate] = useState("");
+  const [inputClaimableDate, setInputClaimableDate] = useState(new Date());
 
   const [showTransactionDialog, setShowTransactionDialog] = useState(false);
   const [txDialogTitle, setTxDialogTitle] = useState("");
   const [txDialogDesc, setTxDialogDesc] = useState("");
   const [transaction, setTransaction] = useState();
-
-  const handleTxCancel = () => setShowTransactionDialog(false);
-  const handleTxDone = () => setShowTransactionDialog(false);
+  const [transactionMetadata, setTransactionMetadata] = useState();
+  
+  const handleTxCancel = () => { setShowTransactionDialog(false); refreshListing(); }
+  const handleTxDone = () => { setShowTransactionDialog(false); refreshListing(); }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-    const secretKey = localStorage.getItem("loggedInKey");
+  const refreshListing = () => {
+    const secretKey = StorageService.getLoggedInKey();
     const keypair = getKeyPair(secretKey);
-
-    getFundsByCreator(keypair.publicKey()).then((result) => {
+    getClaimablesByCreator(keypair.publicKey()).then((result) => {
       setFunds(result);
     });
+  }
+
+  useEffect(() => {
+    console.log("[useEffect] funds");
+
+    if (!funds) {
+      const secretKey = StorageService.getLoggedInKey();
+      const keypair = getKeyPair(secretKey);
+
+      getClaimablesByCreator(keypair.publicKey()).then((result) => {
+        setFunds(result);
+      });
+    }
   }, [funds]);
 
   const handleCreate = () => {
-    handleClose();
-    // const secretKey = localStorage.getItem("loggedInKey");
-    // const keypair = getKeyPair(secretKey);
-    // const tx = buildCreateClaimableBalanceTransaction(
-    //   keypair,
-    //   inputBeneficiaryAccount,
-    //   getAssetByName("native"),
-    //   inputAmount,
-    //   inputFundName,
-    //   inputClaimableDate
-    // );
-    const tx = null;
-    setTransaction(tx);
+    
+    const secretKey = StorageService.getLoggedInKey();
+    const keypair = getKeyPair(secretKey);
+    
+    buildCreateClaimableBalanceTransaction(
+      keypair,
+      inputBeneficiaryAccount,
+      getAssetByName("native"),
+      inputAmount,
+      inputFundName,
+      inputClaimableDate
+    ).then(tx => {
 
-    setTxDialogTitle(`Create Fund Submission`);
-    setTxDialogDesc(
-      `You are about to create a claimable fund with ${inputAmount} Lumens. Confirm submission?`
-    );
-    setShowTransactionDialog(true);
+      console.log(`[handleCreate] returning from build`);
+      handleClose();
+      setTransaction(tx);
+
+      // TODO: Temporary storage
+      setTransactionMetadata({
+        type: 'CreateClaimable',
+        balanceId: '000000008afb556010517ef0fa9b22f71f69aef81cb9c1c7db6386737505e0d2d8de1d5f',
+        name: inputFundName,
+        amount: inputAmount,
+        asset: "XLM",
+        claimableDate: inputClaimableDate,
+        beneficiaryAccount: inputBeneficiaryAccount,
+        sender: keypair.publicKey()
+      });
+
+      setTxDialogTitle(`Create Fund Submission`);
+      setTxDialogDesc(
+        `You are about to create a claimable fund with ${inputAmount} Lumens. Confirm submission?`
+      );
+      setShowTransactionDialog(true);
+    });
   };
 
   const displayActiveFunds = () => {
-    if (funds) {
-      return funds.map((item) => {
+    if (funds && funds.length > 0) {
+      return funds.map((item, index) => {
         return (
-          <div className="card" key={item.balanceId}>
+          <div className="card" key={index}>
             <div className="card-body">
               <h5 className="card-title">{item.name}</h5>
               <h6 className="card-subtitle mb-2 text-muted">
                 {item.amount} {item.asset}
               </h6>
-              <p className="card-text">Claimable From: {item.claimableDate}</p>
-              <p className="card-text">
-                Benificiary Account:
+              <p className="card-text">Claimable from {item.claimableDate}</p>
+              <p className="card-text small">
+                Benificiary Account:<br />
                 {item.beneficiaryAccount}
               </p>
-              <a href="#" className="card-link text-danger">
+              <a href="#" className="card-link btn text-danger">
                 Invalidate
               </a>
             </div>
@@ -84,15 +116,16 @@ export default function Funds() {
         );
       });
     } else {
-      return <div>No funds</div>;
+      return <div className="pb-4">You do not have any active funds.</div>;
     }
   };
 
   return (
     <div className="wrapper">
       <h2>Active Funds</h2>
-      <div>
-        {displayActiveFunds()}
+      <div className="text-muted">Your funds which have yet to be claimed by beneficiary</div>
+      <div className="pt-4">
+        <div>{displayActiveFunds()}</div>
         <div>
           <button className="btn btn-primary" onClick={() => handleShow()}>
             Create New
@@ -132,8 +165,15 @@ export default function Funds() {
             </div>
             <div className="form-group">
               <label>Amount</label>
+              <select className="form-control">
+                <option selected="true">Native (Lumens)</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Amount</label>
               <input
                 className="form-control"
+                type="number"
                 value={inputAmount}
                 onInput={(e) => setInputAmount(e.target.value)}
                 placeholder=""
@@ -141,12 +181,13 @@ export default function Funds() {
             </div>
             <div className="form-group">
               <label>Claimable Date</label>
-              <input
-                className="form-control"
-                value={inputClaimableDate}
-                onInput={(e) => setInputClaimableDate(e.target.value)}
-                placeholder=""
-              />
+              <div>
+                <DatePicker
+                  className="form-control"
+                  selected={inputClaimableDate}
+                  onChange={(date) => setInputClaimableDate(date)}
+                />
+              </div>
             </div>
           </div>
         </Modal.Body>
@@ -167,6 +208,7 @@ export default function Funds() {
         onCancel={handleTxCancel}
         onFinish={handleTxDone}
         transaction={transaction}
+        transactionMetadata={transactionMetadata}
       />
 
       <style jsx global>

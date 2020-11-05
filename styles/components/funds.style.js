@@ -5,10 +5,6 @@ export default css.global`
     margin: 30px;
   }
 
-  h2 {
-    margin-bottom: 30px;
-  }
-
   .btn-primary,
   .btn-primary:hover,
   .btn-primary:focus {
@@ -19,5 +15,9 @@ export default css.global`
 
   .card {
     margin-bottom: 30px;
+  }
+
+  .card-link {
+    border: solid 1px;
   }
 `;

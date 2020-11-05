@@ -1,13 +1,20 @@
 import StellarSdk, { FastSigning } from "stellar-sdk";
+import StorageService from './storageService';
 
 const DEFAULT_TX_TIMEOUT_SEC = 180;
 const TX_FEE = "1000"; //default is 100
 
 const server = new StellarSdk.Server("https://horizon-testnet.stellar.org");
 
-export const test = () => {
+export const test = (value) => {
   console.log(`[test]`);
-  console.log(StellarSdk.Asset.native());
+
+  server.claimableBalances({ claimant: value })
+  .call()
+  .then(result => {
+    console.log(result);
+  });
+
 };
 
 export const isAccountExists = async (account) => {
@@ -96,11 +103,17 @@ export const getBalance = async (accountPublicKey) => {
       .loadAccount(accountPublicKey)
       .then((account) => {
         account.balances.forEach(function (balance) {
-          console.log(balance);
-          result.push({
-            assetType: balance.asset_type,
-            balance: balance.balance,
-          });
+          if (balance.asset_type === 'native') {
+            result.push({
+              assetType: 'XLM',
+              balance: balance.balance,
+            });
+          } else {
+            result.push({
+              assetType: balance.asset_type,
+              balance: balance.balance,
+            });
+          }
         });
         resolve(result);
       })
@@ -187,7 +200,7 @@ export const getAccountTransactions = (account) => {
     .forAccount(account)
     .call()
     .then(function (accountResult) {
-      //console.log(accountResult);
+      console.log(accountResult);
       console.log(JSON.stringify(accountResult));
     })
     .catch(function (err) {
@@ -195,68 +208,28 @@ export const getAccountTransactions = (account) => {
     })
 };
 
-export const getFundsByCreator = async (publicKey) => {
-  // TODO: retrieve all transactions, then return only claimables
-  // read meta and deserialize JSON, find type='waris_claim'
-  // source account = publicKey
-
-  let fundsData = [];
-  fundsData.push({
-    balanceId: "aaaa0000",
-    name: "Tiffany's Education Fund",
-    amount: "3000",
-    asset: "Lumens",
-    claimableDate: "2022-10-20",
-    beneficiaryAccount:
-      "GA2C5RFPE6GCKMY3US5PAB6UZLKIGSPIUKSLRB6Q723BM2OARMDUYEJ5",
-  });
-  fundsData.push({
-    balanceId: "aaaa0000",
-    name: "Retirement Savings",
-    amount: "50000",
-    asset: "Lumens",
-    claimableDate: "2030-10-20",
-    beneficiaryAccount:
-      "GA2C5RFPE6GCKMY3US5PAB6UZLKIGSPIUKSLRB6Q723BM2OARMDUYEJ5",
-  });
-
-  return fundsData;
+export const getClaimablesByCreator = async (publicKey) => {
+  // TODO: 
+  // the claimable_balance endpoint in horizon does not return the correct values
+  // using local storage as temporary place holder
+  let result = StorageService.getClaimables();
+  return result.filter(x => x.sender === publicKey);
 };
 
 export const getClaimablesByBeneficiary = async (publicKey) => {
-  // TODO: retrieve all transactions, then return only claimables
-  /*
-  // Method 3: Account B could alternatively do something like:
-  balances, err := client.ClaimableBalances(sdk.ClaimableBalanceRequest{Claimant: B})
-  check(err)
-  balanceId := balances.Embedded.Records[0].BalanceID
-  */
 
-  // read meta and deserialize JSON, find type='waris_claim'
-  // source account != publicKey
-
-
-  let claimablesData = [];
-  claimablesData.push({
-    balanceId: "aaaa0000",
-    name: "Tiffany's Education Fund",
-    amount: "3000",
-    asset: "Lumens",
-    claimableDate: "2022-10-20",
-    sourceAccount:
-      "GA2C5RFPE6GCKMY3US5PAB6UZLKIGSPIUKSLRB6Q723BM2OARMDUYEJ5",
-  });
-  claimablesData.push({
-    balanceId: "bbbb1111",
-    name: "Retirement Savings",
-    amount: "50000",
-    asset: "Lumens",
-    claimableDate: "2030-10-20",
-    sourceAccount:
-      "GA2C5RFPE6GCKMY3US5PAB6UZLKIGSPIUKSLRB6Q723BM2OARMDUYEJ5",
-  });
-
-  return claimablesData;
+  // server
+  //   .claimableBalances({ claimant: value })
+  //   .call()
+  //   .then(result => {
+  //     console.log(result);
+  //   });
+  
+  // TODO: 
+  // the claimable_balance endpoint in horizon does not return the correct values
+  // using local storage as temporary place holder
+  let result = StorageService.getClaimables();
+  return result.filter(x => x.beneficiaryAccount === publicKey);
 };
 
 export const buildCreateClaimableBalanceTransaction = (
@@ -289,10 +262,10 @@ export const buildCreateClaimableBalanceTransaction = (
 
         const claimants = [
           new StellarSdk.Claimant(creatorKeypair.publicKey(), creatorPredicate),
-          new StellarSdk.Claimant(inheritorAccount, inheritorPredicate),
+          new StellarSdk.Claimant(beneficiaryAccount, inheritorPredicate),
         ];
 
-        transaction = new StellarSdk.TransactionBuilder(creatorAccount, {
+        let transaction = new StellarSdk.TransactionBuilder(creatorAccount, {
           fee: TX_FEE,
           networkPassphrase: StellarSdk.Networks.TESTNET,
         })
@@ -325,7 +298,7 @@ export const buildClaimTransaction = (beneficiaryKeypair, balanceId) => {
       .loadAccount(beneficiaryKeypair.publicKey())
       .then(function (account) {
 
-        transaction = new StellarSdk.TransactionBuilder(account, {
+        let transaction = new StellarSdk.TransactionBuilder(account, {
           fee: TX_FEE,
           networkPassphrase: StellarSdk.Networks.TESTNET,
         })
@@ -351,6 +324,7 @@ export const buildClaimTransaction = (beneficiaryKeypair, balanceId) => {
 export const submitTransaction = (transaction) => {
   console.log(`[submitTransaction]`);
 
+  // TODO: test
   return new Promise((resolve, reject) => {
     setTimeout(function(){ 
       resolve(true);
@@ -368,6 +342,25 @@ export const submitTransaction = (transaction) => {
     });
   });
 };
+
+const getStorageClaimable = (tx) => {
+
+  // tx._operations[0].claimants[0]._destination
+  // tx._operations[0].amount
+  // tx._tx._attributes.memo._value
+  
+  let result = {
+    balanceId: "aaaa0000",
+    name: "Tiffany's Education Fund",
+    amount: "3000",
+    asset: "XLM",
+    claimableDate: "2022-10-20",
+    beneficiaryAccount:
+      "GA2C5RFPE6GCKMY3US5PAB6UZLKIGSPIUKSLRB6Q723BM2OARMDUYEJ5",
+  };
+
+  return result;
+}
 
 // References
 // https://developers.stellar.org/docs/glossary/claimable-balance/

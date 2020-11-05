@@ -14,6 +14,7 @@ import AccountBalance from "../components/account-balance";
 import Funds from "../components/funds";
 import Claimables from "../components/claimables";
 import History from "../components/history";
+import StorageService from './../core/services/storageService';
 
 export default function Account() {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function Account() {
       <SideNav
         onSelect={(selected) => {
           if (selected === "logout") {
-            localStorage.removeItem("loggedInKey");
+            StorageService.clearLoggedInKey();
             router.push("/");
           } else {
             setSelectedMenu(selected);

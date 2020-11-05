@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { submitTransaction } from '../core/services/stellarService';
+import StorageService from './../core/services/storageService';
 
 export default function TransactionDialog(props) {
+
+  console.log(`[TransactionDialog]`);
 
   const [submissionState, setSubmissionState] = useState('default');
 
@@ -15,10 +18,18 @@ export default function TransactionDialog(props) {
     submitTransaction(props.transaction).then(result => {
       if (result) {
         setSubmissionState('complete');
+
+        // TODO: temporary storage
+        if (props.transactionMetadata.type === 'CreateClaimable') {
+          StorageService.addClaimable(props.transactionMetadata);
+        }
+        if (props.transactionMetadata.type === 'Claim') {
+          StorageService.removeClaimable(props.transactionMetadata);
+        }
       } else {
         setSubmissionState('failed');
       }
-    })
+    });
   };
 
   const handleRetry = () => {
