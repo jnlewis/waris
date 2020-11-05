@@ -5,6 +5,7 @@ import StorageService from './../core/services/storageService';
 
 export default function AccountBalance() {
   const [balances, setBalances] = useState();
+  const [address, setAddress] = useState();
 
   useEffect(() => {
     console.log('[useEffect] account balance');
@@ -19,6 +20,14 @@ export default function AccountBalance() {
       });
     }
   }, [balances]);
+
+  useEffect(() => {
+    console.log('[useEffect] address');
+
+    const secretKey = StorageService.getLoggedInKey();
+    const keypair = getKeyPair(secretKey);
+    setAddress(keypair.publicKey());
+  }, [address]);
 
   const displayBalances = () => {
     if (balances) {
@@ -35,16 +44,10 @@ export default function AccountBalance() {
     }
   };
 
-  const getAddress = () => {
-    const secretKey = StorageService.getLoggedInKey();
-    const keypair = getKeyPair(secretKey);
-    return keypair.publicKey();
-  }
-
   return (
     <div className="wrapper">
       <h2>Account Balance</h2>
-      <div className="text-muted">Address: {getAddress()}</div>
+      <div className="text-muted">Address: {address}</div>
 
       <div className="pt-4">
         {displayBalances()}
