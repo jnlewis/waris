@@ -43,8 +43,6 @@ export default function Funds() {
   }
 
   useEffect(() => {
-    console.log("[useEffect] funds");
-
     if (!funds) {
       const secretKey = StorageService.getLoggedInKey();
       const keypair = getKeyPair(secretKey);
@@ -69,7 +67,6 @@ export default function Funds() {
       inputClaimableDate
     ).then(tx => {
 
-      console.log(`[handleCreate] returning from build`);
       handleClose();
       setTransaction(tx);
 

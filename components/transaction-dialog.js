@@ -6,8 +6,6 @@ import StorageService from './../core/services/storageService';
 
 export default function TransactionDialog(props) {
 
-  console.log(`[TransactionDialog]`);
-
   const [submissionState, setSubmissionState] = useState('default');
 
   const handleCancel = () => props.onCancel();

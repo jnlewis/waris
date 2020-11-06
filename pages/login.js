@@ -24,13 +24,9 @@ export default function Login() {
   const handleShowLoginByKey = () => setShowLoginByKey(true);
   const handleCloseCreateAccount = () => setShowCreateAccount(false);
   const handleShowCreateAccount = () => {
-    console.log(`[handleShowCreateAccount]`);
     setShowCreateAccount(true);
     setIsLoading(true);
     generateKeyAndCreateAccount().then((newSecret) => {
-      console.log(
-        `[handleShowCreateAccount] returning from promise with result ${newSecret}`
-      );
       setIsLoading(false);
       setNewAccountSecret(newSecret);
     });
@@ -46,7 +42,6 @@ export default function Login() {
 
     setIsLoading(true);
     isAccountExists(keypair.publicKey()).then((exists) => {
-      console.log(`returning from promise ${exists}`);
       setIsLoading(false);
       if (exists) {
         StorageService.setLoggedInKey(input);
@@ -56,10 +51,6 @@ export default function Login() {
         alert("Unable to login. Please ensure that account exists on testnet.");
       }
     });
-  };
-
-  const createAccount = () => {
-    console.log(`[createAccount]`);
   };
 
   return (

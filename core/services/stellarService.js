@@ -6,25 +6,11 @@ const TX_FEE = "1000"; //default is 100
 
 const server = new StellarSdk.Server("https://horizon-testnet.stellar.org");
 
-export const test = (value) => {
-  console.log(`[test]`);
-
-  server.claimableBalances({ claimant: value })
-  .call()
-  .then(result => {
-    console.log(result);
-  });
-
-};
-
 export const isAccountExists = async (account) => {
-  console.log(`[isAccountExists]`);
   return new Promise((resolve, reject) => {
     server
       .loadAccount(account)
       .catch(function (error) {
-        console.log("failed");
-        console.log(error);
         if (error instanceof StellarSdk.NotFoundError) {
           resolve(false);
         } else {
@@ -32,22 +18,15 @@ export const isAccountExists = async (account) => {
         }
       })
       .then(function () {
-        console.log("success");
         resolve(true);
       });
   });
 };
 
 export const createKeyPair = () => {
-  console.log(`[createKeyPair]`);
-
   // create a completely new and unique pair of keys
   // see more about KeyPair objects: https://stellar.github.io/js-stellar-sdk/Keypair.html
   const keypair = StellarSdk.Keypair.random();
-
-  console.log(`secret: ${keypair.secret()}`);
-  console.log(`publicKey: ${keypair.publicKey()}`);
-
   return keypair;
 };
 
@@ -60,16 +39,11 @@ export const getKeyPair = (secretKey) => {
 };
 
 export const generateKeyAndCreateAccount = async () => {
-  console.log(`[generateKeyAndCreateAccount]`);
-
   return new Promise((resolve, reject) => {
     const keypair = createKeyPair();
     createAccount(keypair)
       .then((result) => {
-        console.log(
-          `[generateKeyAndCreateAccount] returning from promise with result ${result}`
-        );
-        resolve(keypair.publicKey());
+        resolve(keypair.secret());
       })
       .catch((error) => {
         reject(error);
@@ -78,8 +52,6 @@ export const generateKeyAndCreateAccount = async () => {
 };
 
 export const createAccount = async (keypair) => {
-  console.log(`[createAccount]`);
-
   try {
     const response = await fetch(
       `https://friendbot.stellar.org?addr=${encodeURIComponent(
@@ -87,7 +59,6 @@ export const createAccount = async (keypair) => {
       )}`
     );
     const responseJSON = await response.json();
-    //console.log("SUCCESS! You have a new account :)\n", JSON.stringify(responseJSON));
     return true;
   } catch (error) {
     throw error;
@@ -95,8 +66,6 @@ export const createAccount = async (keypair) => {
 };
 
 export const getBalance = async (accountPublicKey) => {
-  console.log(`[getBalance]`);
-
   return new Promise((resolve, reject) => {
     let result = [];
     server
@@ -144,8 +113,6 @@ export const makePayment = (
   amount,
   memo
 ) => {
-  console.log("[makePayment]");
-
   // Transaction will hold a built transaction we can resubmit if the result is unknown.
   var transaction;
 
@@ -192,16 +159,12 @@ export const makePayment = (
 };
 
 export const getAccountTransactions = (account) => {
-  console.log(`[getAccountTransactions]`);
-
   var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
   server.transactions()
     .forAccount(account)
     .call()
     .then(function (accountResult) {
-      console.log(accountResult);
-      console.log(JSON.stringify(accountResult));
     })
     .catch(function (err) {
       console.error(err);
@@ -239,7 +202,6 @@ export const buildCreateClaimableBalanceTransaction = (
     amount,
     name,
     claimableDate) => {
-  console.log("[buildCreateClaimableBalanceTransaction]");
 
   return new Promise((resolve, reject) => {
     server
@@ -291,8 +253,7 @@ export const buildCreateClaimableBalanceTransaction = (
 }
 
 export const buildClaimTransaction = (beneficiaryKeypair, balanceId) => {
-  console.log("[createClaimTransaction]");
-
+  
   return new Promise((resolve, reject) => {
     server
       .loadAccount(beneficiaryKeypair.publicKey())
@@ -322,8 +283,7 @@ export const buildClaimTransaction = (beneficiaryKeypair, balanceId) => {
 }
 
 export const submitTransaction = (transaction) => {
-  console.log(`[submitTransaction]`);
-
+  
   // TODO: test
   return new Promise((resolve, reject) => {
     setTimeout(function(){ 
