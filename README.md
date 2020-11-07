@@ -40,8 +40,11 @@ The use case for such a service include scheduled payments, will writing to leav
 </p>
 
 ## Technologies
-* The Application is developed in javascript with ReactJs and NextJs framework.
-* The blockchain technology used is <a href="https://www.stellar.org/" target="_blank">Stellar</a>.
+* The application is developed in javascript with ReactJs and NextJs framework.
+* The blockchain network used is <a href="https://www.stellar.org/" target="_blank">Stellar</a>.
+
+## Stellar Meridian Hackathon 2020
+* The project will be submitted as a hackathon entry and will reply on the <a href="https://developers.stellar.org/docs/glossary/claimable-balance/" target="_blank">Claimable Balance</a> feature on Stellar.
 
 ## Live Product Preview
 <a href="https://waris.vercel.app" target="_blank">https://waris.vercel.app</a>
