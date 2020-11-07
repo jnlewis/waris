@@ -6,7 +6,7 @@
 Decentralized claimable funds service built on the Stellar Network.
 
 ## Introduction
-Waris aims to promote financial planning and management by making claimable funds self managable, easy and safe by utilizing the immutability of blockchain networks. Funds created on Waris are stored on the blockchain, and can only be managed by the original creator of the fund.
+Waris aims to promote financial planning and management by making claimable funds self manageable, easy and safe by utilizing the immutability of blockchain networks. Funds created on Waris are stored on the blockchain, and can only be managed by the original creator of the fund.
 
 Target users are individuals and companies who have a need to create fund accounts with monetary assets that can be claimed by a different party after a certain period of time. Users would log in to Waris using either their Stellar wallet or secret key. Note: Sensitive information will only be kept on users own device and never sent to server.
 
