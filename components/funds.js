@@ -63,6 +63,17 @@ export default function Funds() {
     const secretKey = StorageService.getLoggedInKey();
     const keypair = getKeyPair(secretKey);
 
+    // Validate input
+    if (
+      inputBeneficiaryAccount.trim() === "" ||
+      inputAmount.trim() === "" ||
+      inputFundName.trim() === ""
+    ) {
+      alert("Please enter all fields.");
+      return;
+    }
+
+    // Create transaction
     buildCreateClaimableBalanceTransaction(
       keypair,
       inputBeneficiaryAccount,
@@ -71,14 +82,6 @@ export default function Funds() {
       inputFundName,
       inputClaimableDate
     ).then((tx) => {
-      if (
-        inputBeneficiaryAccount.trim() === "" ||
-        inputAmount.trim() === "" ||
-        inputFundName.trim() === ""
-      ) {
-        alert("Please enter all fields.");
-        return;
-      }
 
       handleClose();
       setTransaction(tx);
@@ -101,6 +104,10 @@ export default function Funds() {
         `You are about to create a claimable fund with ${inputAmount} XLM. Confirm submission?`
       );
       setShowTransactionDialog(true);
+    })
+    .catch(error => {
+      alert("Failed to create transaction. Please make sure the beneficiary account is valid.");
+      console.log(error);
     });
   };
 

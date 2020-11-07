@@ -6,6 +6,8 @@ import StorageService from './../core/services/storageService';
 
 export default function TransactionDialog(props) {
 
+  const [submissionCount, setSubmissionCount] = useState(0);
+
   const [submissionState, setSubmissionState] = useState('default');
 
   const handleCancel = () => props.onCancel();
@@ -13,8 +15,17 @@ export default function TransactionDialog(props) {
 
   const handleSubmit = () => {
     setSubmissionState('loading');
-    submitTransaction(props.transaction).then(result => {
-      if (result) {
+    submitTransaction(props.transaction).then(success => {
+      
+      // TODO: for demo purpose, simulate failure and retry
+      if (props.transactionMetadata.type === 'CreateClaimable') {
+        if (submissionCount === 0) {
+          success = false;
+        }
+      }
+      setSubmissionCount(submissionCount + 1);
+
+      if (success) {
         setSubmissionState('complete');
 
         // TODO: temporary storage
@@ -31,14 +42,7 @@ export default function TransactionDialog(props) {
   };
 
   const handleRetry = () => {
-    setSubmissionState('loading');
-    submitTransaction(props.transaction).then(result => {
-      if (result) {
-        setSubmissionState('complete');
-      } else {
-        setSubmissionState('failed');
-      }
-    })
+    handleSubmit();
   };
   
   return (
