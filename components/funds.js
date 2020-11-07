@@ -173,6 +173,7 @@ export default function Funds() {
                 value={inputFundName}
                 onInput={(e) => setInputFundName(e.target.value)}
                 placeholder="Eg: Jane's Education Fund"
+                maxLength="28"
               />
             </div>
             <div className="form-group">
@@ -182,12 +183,13 @@ export default function Funds() {
                 value={inputBeneficiaryAccount}
                 onInput={(e) => setInputBeneficiaryAccount(e.target.value)}
                 placeholder=""
+                maxLength="60"
               />
             </div>
             <div className="form-group">
-              <label>Amount</label>
+              <label>Asset</label>
               <select className="form-control">
-                <option selected="true">Native (XLM)</option>
+                <option selected="true">XLM</option>
               </select>
             </div>
             <div className="form-group">
