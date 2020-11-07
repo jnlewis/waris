@@ -8,15 +8,12 @@ export default function AccountBalance() {
   const [address, setAddress] = useState();
 
   useEffect(() => {
-    console.log('[useEffect] account balance');
-
     if (!balances) {
       const secretKey = StorageService.getLoggedInKey();
       const keypair = getKeyPair(secretKey);
   
       getBalance(keypair.publicKey()).then((result) => {
         setBalances(result);
-        console.log(JSON.stringify(result));
       });
     }
   }, [balances]);

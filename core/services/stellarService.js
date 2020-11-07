@@ -176,18 +176,22 @@ export const getAccountTransactions = (account) => {
   });
 };
 
+export const getLatestClaimableBalanceId = async (publicKey) => {
+  const res = await fetch(`https://horizon-testnet.stellar.org/claimable_balances?sponsor=${publicKey}&order=desc`);
+  const claimables = await res.json();
+
+  if (claimables) {
+    return claimables._embedded.records[0].id;
+  } else {
+    return null;
+  }
+}
 export const getClaimablesByCreator = async (publicKey) => {
 
   // TODO: 
-  // the claimableBalances SDK here does not return the correct values
-  // using local storage as temporary place holder until we figure how this works
-  // 
-  // server
-  //   .claimableBalances({ claimant: value })
-  //   .call()
-  //   .then(result => {
-  //     console.log(result);
-  //   });
+  // the following endpoint returns the list of claimable balances by sponsor
+  // However we haven't figured out how to get the memo. So for demo purpose we are using local storage
+  // https://horizon-testnet.stellar.org/claimable_balances?sponsor=GDWGYZGLUFBZPECJIGBBEQOG7FBSW7Q2FDRJJ5LYD2UXP7HQHZIOJS3A&order=desc
   
   let result = StorageService.getClaimables();
   return result.filter(x => x.sender === publicKey);
@@ -196,9 +200,9 @@ export const getClaimablesByCreator = async (publicKey) => {
 export const getClaimablesByBeneficiary = async (publicKey) => {
 
   // TODO: 
-  // the claimableBalances SDK here does not return the correct values
-  // using local storage as temporary place holder until we figure how this works
-  // 
+  // the following endpoint returns the list of claimable balances by sponsor
+  // we haven't yet been able to retrieve by claimant destination. So for demo purpose we are using local storage
+  // https://horizon-testnet.stellar.org/claimable_balances?sponsor=GDWGYZGLUFBZPECJIGBBEQOG7FBSW7Q2FDRJJ5LYD2UXP7HQHZIOJS3A&order=desc
   // server
   //   .claimableBalances({ claimant: value })
   //   .call()
@@ -299,12 +303,12 @@ export const buildClaimTransaction = (beneficiaryKeypair, balanceId) => {
 
 export const submitTransaction = (transaction) => {
   
-  // TODO: test
-  return new Promise((resolve, reject) => {
-    setTimeout(function(){ 
-      resolve(true);
-    }, 3000);
-  });
+  // // TODO: test
+  // return new Promise((resolve, reject) => {
+  //   setTimeout(function(){ 
+  //     resolve(true);
+  //   }, 3000);
+  // });
 
   return new Promise((resolve, reject) => {
     server.submitTransaction(transaction)

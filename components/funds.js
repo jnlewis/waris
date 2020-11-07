@@ -8,6 +8,7 @@ import {
   getClaimablesByCreator,
   buildCreateClaimableBalanceTransaction,
   getAssetByName,
+  getLatestClaimableBalanceId,
 } from "../core/services/stellarService";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -81,34 +82,37 @@ export default function Funds() {
       inputAmount,
       inputFundName,
       inputClaimableDate
-    ).then((tx) => {
+    )
+      .then((tx) => {
+        handleClose();
+        setTransaction(tx);
 
-      handleClose();
-      setTransaction(tx);
+        // TODO: Metadata will be stored in local storage after transaction submitted successfully
+        // for demo purpose because we are currently not able to retrieve the transaction meta text from claimable_balances endpoint
+        setTransactionMetadata({
+          type: "CreateClaimable",
+          balanceId: null,  // we can get and set the balanceId after transaction is submitted
+          name: inputFundName,
+          amount: inputAmount,
+          asset: "XLM",
+          claimableDate: inputClaimableDate,
+          beneficiaryAccount: inputBeneficiaryAccount,
+          sender: keypair.publicKey(),
+        });
 
-      // TODO: Temporary storage
-      setTransactionMetadata({
-        type: "CreateClaimable",
-        balanceId:
-          "000000008afb556010517ef0fa9b22f71f69aef81cb9c1c7db6386737505e0d2d8de1d5f",
-        name: inputFundName,
-        amount: inputAmount,
-        asset: "XLM",
-        claimableDate: inputClaimableDate,
-        beneficiaryAccount: inputBeneficiaryAccount,
-        sender: keypair.publicKey(),
+        // Show the transaction dialog
+        setTxDialogTitle(`Create Fund Submission`);
+        setTxDialogDesc(
+          `You are about to create a claimable fund with ${inputAmount} XLM. Confirm submission?`
+        );
+        setShowTransactionDialog(true);
+      })
+      .catch((error) => {
+        alert(
+          "Failed to create transaction. Please make sure the beneficiary account is valid."
+        );
+        console.log(error);
       });
-
-      setTxDialogTitle(`Create Fund Submission`);
-      setTxDialogDesc(
-        `You are about to create a claimable fund with ${inputAmount} XLM. Confirm submission?`
-      );
-      setShowTransactionDialog(true);
-    })
-    .catch(error => {
-      alert("Failed to create transaction. Please make sure the beneficiary account is valid.");
-      console.log(error);
-    });
   };
 
   const displayActiveFunds = () => {

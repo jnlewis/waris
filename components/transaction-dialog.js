@@ -17,24 +17,23 @@ export default function TransactionDialog(props) {
     setSubmissionState('loading');
     submitTransaction(props.transaction).then(success => {
       
-      // TODO: for demo purpose, simulate failure and retry
-      if (props.transactionMetadata.type === 'CreateClaimable') {
-        if (submissionCount === 0) {
-          success = false;
-        }
-      }
-      setSubmissionCount(submissionCount + 1);
-
       if (success) {
-        setSubmissionState('complete');
 
-        // TODO: temporary storage
+      // TODO: Store meta data in local storage for demo purpose because we are currently
+      // not able to retrieve the transaction meta text from claimable_balances endpoint
         if (props.transactionMetadata.type === 'CreateClaimable') {
-          StorageService.addClaimable(props.transactionMetadata);
+          // Once transaction is successful, get the claimable balance Id from horizon API
+          getLatestClaimableBalanceId(keypair.publicKey())
+          .then(balanceId => {
+            props.transactionMetadata.balanceId = balanceId;
+            StorageService.addClaimable(props.transactionMetadata);
+          });
         }
         if (props.transactionMetadata.type === 'Claim') {
           StorageService.removeClaimable(props.transactionMetadata);
         }
+
+        setSubmissionState('complete');
       } else {
         setSubmissionState('failed');
       }
