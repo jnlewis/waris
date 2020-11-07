@@ -159,28 +159,29 @@ export const makePayment = (
 };
 
 export const getAccountTransactions = (account) => {
-  var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
-  server.transactions()
+  return new Promise((resolve, reject) => {
+    server.transactions()
     .forAccount(account)
     .call()
-    .then(function (accountResult) {
+    .then(function (result) {
+      console.log(`[getAccountTransactions]`);
+      console.log(result);
+      resolve(result);
     })
     .catch(function (err) {
       console.error(err);
+      reject(err);
     })
+  });
 };
 
 export const getClaimablesByCreator = async (publicKey) => {
+
   // TODO: 
-  // the claimable_balance endpoint in horizon does not return the correct values
-  // using local storage as temporary place holder
-  let result = StorageService.getClaimables();
-  return result.filter(x => x.sender === publicKey);
-};
-
-export const getClaimablesByBeneficiary = async (publicKey) => {
-
+  // the claimableBalances SDK here does not return the correct values
+  // using local storage as temporary place holder until we figure how this works
+  // 
   // server
   //   .claimableBalances({ claimant: value })
   //   .call()
@@ -188,9 +189,23 @@ export const getClaimablesByBeneficiary = async (publicKey) => {
   //     console.log(result);
   //   });
   
+  let result = StorageService.getClaimables();
+  return result.filter(x => x.sender === publicKey);
+};
+
+export const getClaimablesByBeneficiary = async (publicKey) => {
+
   // TODO: 
-  // the claimable_balance endpoint in horizon does not return the correct values
-  // using local storage as temporary place holder
+  // the claimableBalances SDK here does not return the correct values
+  // using local storage as temporary place holder until we figure how this works
+  // 
+  // server
+  //   .claimableBalances({ claimant: value })
+  //   .call()
+  //   .then(result => {
+  //     console.log(result);
+  //   });
+
   let result = StorageService.getClaimables();
   return result.filter(x => x.beneficiaryAccount === publicKey);
 };
@@ -302,37 +317,3 @@ export const submitTransaction = (transaction) => {
     });
   });
 };
-
-const getStorageClaimable = (tx) => {
-
-  // tx._operations[0].claimants[0]._destination
-  // tx._operations[0].amount
-  // tx._tx._attributes.memo._value
-  
-  let result = {
-    balanceId: "aaaa0000",
-    name: "Tiffany's Education Fund",
-    amount: "3000",
-    asset: "XLM",
-    claimableDate: "2022-10-20",
-    beneficiaryAccount:
-      "GA2C5RFPE6GCKMY3US5PAB6UZLKIGSPIUKSLRB6Q723BM2OARMDUYEJ5",
-  };
-
-  return result;
-}
-
-// References
-// https://developers.stellar.org/docs/glossary/claimable-balance/
-// https://stellar.github.io/js-stellar-sdk/Operation.html#.createClaimableBalance
-// https://github.com/stellar/js-stellar-base/blob/master/CHANGELOG.md (find for predicate)
-
-/*
-Add Operation.claimClaimableBalance (#368) Extend the operation class with a new helper 
-to create claim claimable balance operations. It receives the balanceId as exposed by 
-Horizon in the /claimable_balances end-point.
- */
-
-// get account transactions
-// https://horizon.stellar.org/accounts/{accountId}/transactions
-

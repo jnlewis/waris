@@ -11,14 +11,14 @@ import {
 } from "../core/services/stellarService";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import StorageService from './../core/services/storageService';
+import StorageService from "./../core/services/storageService";
 
 export default function Funds() {
   const [show, setShow] = useState(false);
   const [funds, setFunds] = useState();
 
   const [inputFundName, setInputFundName] = useState("");
-  const [inputBeneficiaryAccount, setInputBeneficiaryAccount] = useState("GCSVEYRVDRIJ6U7YDZMVKYEPDXH5F7AUMSAHTU3GV5LPEHEFP2YR23OH");
+  const [inputBeneficiaryAccount, setInputBeneficiaryAccount] = useState("");
   const [inputAmount, setInputAmount] = useState("");
   const [inputClaimableDate, setInputClaimableDate] = useState(new Date());
 
@@ -27,9 +27,15 @@ export default function Funds() {
   const [txDialogDesc, setTxDialogDesc] = useState("");
   const [transaction, setTransaction] = useState();
   const [transactionMetadata, setTransactionMetadata] = useState();
-  
-  const handleTxCancel = () => { setShowTransactionDialog(false); refreshListing(); }
-  const handleTxDone = () => { setShowTransactionDialog(false); refreshListing(); }
+
+  const handleTxCancel = () => {
+    setShowTransactionDialog(false);
+    refreshListing();
+  };
+  const handleTxDone = () => {
+    setShowTransactionDialog(false);
+    refreshListing();
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -40,7 +46,7 @@ export default function Funds() {
     getClaimablesByCreator(keypair.publicKey()).then((result) => {
       setFunds(result);
     });
-  }
+  };
 
   useEffect(() => {
     if (!funds) {
@@ -54,10 +60,9 @@ export default function Funds() {
   }, [funds]);
 
   const handleCreate = () => {
-    
     const secretKey = StorageService.getLoggedInKey();
     const keypair = getKeyPair(secretKey);
-    
+
     buildCreateClaimableBalanceTransaction(
       keypair,
       inputBeneficiaryAccount,
@@ -65,26 +70,35 @@ export default function Funds() {
       inputAmount,
       inputFundName,
       inputClaimableDate
-    ).then(tx => {
+    ).then((tx) => {
+      if (
+        inputBeneficiaryAccount.trim() === "" ||
+        inputAmount.trim() === "" ||
+        inputFundName.trim() === ""
+      ) {
+        alert("Please enter all fields.");
+        return;
+      }
 
       handleClose();
       setTransaction(tx);
 
       // TODO: Temporary storage
       setTransactionMetadata({
-        type: 'CreateClaimable',
-        balanceId: '000000008afb556010517ef0fa9b22f71f69aef81cb9c1c7db6386737505e0d2d8de1d5f',
+        type: "CreateClaimable",
+        balanceId:
+          "000000008afb556010517ef0fa9b22f71f69aef81cb9c1c7db6386737505e0d2d8de1d5f",
         name: inputFundName,
         amount: inputAmount,
         asset: "XLM",
         claimableDate: inputClaimableDate,
         beneficiaryAccount: inputBeneficiaryAccount,
-        sender: keypair.publicKey()
+        sender: keypair.publicKey(),
       });
 
       setTxDialogTitle(`Create Fund Submission`);
       setTxDialogDesc(
-        `You are about to create a claimable fund with ${inputAmount} Lumens. Confirm submission?`
+        `You are about to create a claimable fund with ${inputAmount} XLM. Confirm submission?`
       );
       setShowTransactionDialog(true);
     });
@@ -102,7 +116,8 @@ export default function Funds() {
               </h6>
               <p className="card-text">Claimable from {item.claimableDate}</p>
               <p className="card-text small">
-                Benificiary Account:<br />
+                Benificiary Account:
+                <br />
                 {item.beneficiaryAccount}
               </p>
               <a href="#" className="card-link btn text-danger">
@@ -120,7 +135,9 @@ export default function Funds() {
   return (
     <div className="wrapper">
       <h2>Active Funds</h2>
-      <div className="text-muted">Your funds which have yet to be claimed by beneficiary</div>
+      <div className="text-muted">
+        Your funds which have yet to be claimed by beneficiary
+      </div>
       <div className="pt-4">
         <div>{displayActiveFunds()}</div>
         <div>
@@ -163,7 +180,7 @@ export default function Funds() {
             <div className="form-group">
               <label>Amount</label>
               <select className="form-control">
-                <option selected="true">Native (Lumens)</option>
+                <option selected="true">Native (XLM)</option>
               </select>
             </div>
             <div className="form-group">

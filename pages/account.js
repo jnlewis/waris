@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import styles from "./../styles/pages/account.style.js";
@@ -21,6 +21,14 @@ export default function Account() {
 
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState("balance");
+
+  useEffect(() => {
+    const secretKey = StorageService.getLoggedInKey();
+    if (!secretKey || secretKey.trim() === '') {
+      router.push("/");
+    }
+  });
+
 
   return (
     <div className="container">
