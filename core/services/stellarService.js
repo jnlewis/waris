@@ -188,10 +188,10 @@ export const getLatestClaimableBalanceId = async (publicKey) => {
 }
 export const getClaimablesByCreator = async (publicKey) => {
 
-  // TODO: 
-  // the following endpoint returns the list of claimable balances by sponsor
-  // However we haven't figured out how to get the memo. So for demo purpose we are using local storage
-  // https://horizon-testnet.stellar.org/claimable_balances?sponsor=GDWGYZGLUFBZPECJIGBBEQOG7FBSW7Q2FDRJJ5LYD2UXP7HQHZIOJS3A&order=desc
+  // TODO: Note on local storage:
+  // The claimable_balances endpoint returns the list of claimable balances by sponsor
+  // However the memo text was not included in the response. So for demo purpose we are using local storage.
+  // The actual transaction is submitted and exists on the network.
   
   let result = StorageService.getClaimables();
   return result.filter(x => x.sender === publicKey);
@@ -199,10 +199,11 @@ export const getClaimablesByCreator = async (publicKey) => {
 
 export const getClaimablesByBeneficiary = async (publicKey) => {
 
-  // TODO: 
-  // the following endpoint returns the list of claimable balances by sponsor
-  // we haven't yet been able to retrieve by claimant destination. So for demo purpose we are using local storage
-  // https://horizon-testnet.stellar.org/claimable_balances?sponsor=GDWGYZGLUFBZPECJIGBBEQOG7FBSW7Q2FDRJJ5LYD2UXP7HQHZIOJS3A&order=desc
+  // TODO: Note on local storage:
+  // The claimable_balances endpoint returns the list of claimable balances by sponsor
+  // We haven't yet been able to retrieve by claimant destination. So for demo purpose we are using local storage.
+  // The actual transaction is submitted and exists on the network.
+
   // server
   //   .claimableBalances({ claimant: value })
   //   .call()
