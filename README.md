@@ -44,17 +44,13 @@ The use case for such a service include scheduled payments, will writing to leav
 * The blockchain network used is <a href="https://www.stellar.org/" target="_blank">Stellar</a>.
 
 ## Stellar Meridian Hackathon 2020
-* The project will be submitted as a hackathon entry and will reply on the <a href="https://developers.stellar.org/docs/glossary/claimable-balance/" target="_blank">Claimable Balance</a> feature on Stellar.
+* The project will be submitted as a hackathon entry and will implement the <a href="https://developers.stellar.org/docs/glossary/claimable-balance/" target="_blank">Claimable Balance</a> feature on Stellar.
 
 ## Live Product Preview
 <a href="https://waris.vercel.app" target="_blank">https://waris.vercel.app</a>
 
 ## Why Use a Blockchain?
 The use of a blockchain provides resilience to possible downfalls found on centralized systems such as data loss, company bankruptcy, takeovers, or product discontinuation. It also means that your decision is executed exactly as you want it without inteference of any kind. In other words, your decision is final.
-
-means that your will is executed exactly as you specify, without possible interference from. Your decision is final.
-
-you no longer have to trust your funds with a company and its employees, while also providing resilience to common failures found on centralized systems such as data loss, company closure, takeover, or product discontinuation.
 
 ## License
 * Open source <a href="https://github.com/jnlewis/waris/blob/master/LICENSE">MIT</a>
